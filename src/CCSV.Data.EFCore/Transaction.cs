@@ -14,31 +14,31 @@ public class Transaction: ITransaction
 
     public async Task<TResult> Run<TResult>(Func<Task<TResult>> func)
     {
-        using IDbContextTransaction transaction = Context.Database.BeginTransaction();
+        using IDbContextTransaction transaction = await Context.Database.BeginTransactionAsync();
         try
         {
             TResult result = await func();
-            transaction.Commit();
+            await transaction.CommitAsync();
             return result;
         }
         catch
         {
-            transaction.Rollback();
+            await transaction.RollbackAsync();
             throw;
         }
     }
 
     public async Task Run(Func<Task> action)
     {
-        using IDbContextTransaction transaction = Context.Database.BeginTransaction();
+        using IDbContextTransaction transaction = await Context.Database.BeginTransactionAsync();
         try
         {
             await action();
-            transaction.Commit();
+            await transaction.CommitAsync();
         }
         catch
         {
-            transaction.Rollback();
+            await transaction.RollbackAsync();
             throw;
         }
     }
@@ -72,15 +72,5 @@ public class Transaction: ITransaction
             transaction.Rollback();
             throw;
         }
-    }
-
-    public void Save()
-    {
-        Context.SaveChanges();
-    }
-
-    public Task SaveAsync()
-    {
-        return Context.SaveChangesAsync();
     }
 }
