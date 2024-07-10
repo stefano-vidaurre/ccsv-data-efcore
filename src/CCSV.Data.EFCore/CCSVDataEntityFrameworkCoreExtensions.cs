@@ -7,7 +7,8 @@ namespace CCSV.Data.EFCore;
 
 public static class CCSVDataEntityFrameworkCoreExtensions
 {
-    public static IServiceCollection AddEntityFramework(IServiceCollection services) {
+    public static IServiceCollection AddEntityFramework(this IServiceCollection services)
+    {
         services.AddScoped<ITransaction, Transaction>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

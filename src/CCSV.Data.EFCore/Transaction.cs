@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CCSV.Data.EFCore;
 
-public class Transaction: ITransaction
+public class Transaction : ITransaction
 {
     private readonly ApplicationContext Context;
 
