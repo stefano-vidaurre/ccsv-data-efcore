@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     
     <PackageId>CCSV.Data.EFCore</PackageId>
-    <Version>8.0.4</Version>
+    <Version>8.0.5</Version>
     <Authors>Stefano Vidaurre</Authors>
     <Company>CCSV</Company>
     <Title>CCSV.Data.EFCore</Title>
@@ -20,7 +20,7 @@
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CCSV.Domain" Version="8.0.3" />
+    <PackageReference Include="CCSV.Domain" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
