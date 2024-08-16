@@ -21,7 +21,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             return await Context.Set<Tentity>().CountAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null).CountAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).CountAsync();
     }
 
     public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
@@ -30,7 +30,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             return await query(Context.Set<Tentity>()).CountAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null)).CountAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).CountAsync();
     }
 
     public async Task<bool> Any(bool deletionsIncluded = false)
@@ -66,7 +66,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             return await Context.Set<Tentity>().ToArrayAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null).ToArrayAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).ToArrayAsync();
     }
 
     public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
@@ -75,7 +75,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             return await query(Context.Set<Tentity>()).ToArrayAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null)).ToArrayAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).ToArrayAsync();
     }
 
     public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
