@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     
     <PackageId>CCSV.Data.EFCore</PackageId>
-    <Version>8.0.6</Version>
+    <Version>8.0.7</Version>
     <Authors>Stefano Vidaurre</Authors>
     <Company>CCSV</Company>
     <Title>CCSV.Data.EFCore</Title>
