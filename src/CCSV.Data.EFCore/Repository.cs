@@ -15,16 +15,32 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         Context = context;
     }
 
-    public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>>? query = null)
+    public async Task<int> Count(bool deletionsIncluded = false)
     {
-        if (query is not null)
-        {
-            return await query(Context.Set<Tentity>()).CountAsync();
-        }
-        else
-        {
+        if(deletionsIncluded) {
             return await Context.Set<Tentity>().CountAsync();
         }
+
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null).CountAsync();
+    }
+
+    public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    {
+        if(deletionsIncluded) {
+            return await query(Context.Set<Tentity>()).CountAsync();
+        }
+
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null)).CountAsync();
+    }
+
+    public async Task<bool> Any(bool deletionsIncluded = false)
+    {
+        return await Count(deletionsIncluded) > 0;
+    }
+
+    public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    {
+        return await Count(query, deletionsIncluded) > 0;
     }
 
     public async Task<Tentity?> FindOrDefault(Guid id)
@@ -44,23 +60,25 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return entity;
     }
 
-    public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
-
-    public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>>? query = null)
+    public async Task<IEnumerable<Tentity>> GetAll(bool deletionsIncluded = false)
     {
-        IQueryable<Tentity> entities;
-
-        if (query is not null)
-        {
-            entities = query(Context.Set<Tentity>());
-        }
-        else
-        {
-            entities = Context.Set<Tentity>();
+        if(deletionsIncluded) {
+            return await Context.Set<Tentity>().ToArrayAsync();
         }
 
-        return await entities.ToArrayAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null).ToArrayAsync();
     }
+
+    public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    {
+        if(deletionsIncluded) {
+            return await query(Context.Set<Tentity>()).ToArrayAsync();
+        }
+
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate != null)).ToArrayAsync();
+    }
+
+    public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
 
     public async Task<Tentity> GetById(Guid id)
     {
@@ -72,29 +90,6 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
 
         return entity;
-    }
-
-    public Task Delete(Tentity entity)
-    {
-        if (entity is null)
-        {
-            throw new ArgumentEntityException($"User try to delete a null entity ({typeof(Tentity).Name}).");
-        }
-
-        try
-        {
-            Context.Remove<Tentity>(entity);
-
-            return Task.CompletedTask;
-        }
-        catch (InvalidOperationException ex)
-        {
-            throw new RepositoryOperationException($"{typeof(Tentity).Name} can't be deleted. Check cascade restrictions.", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new InternalRepositoryException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
-        }
     }
 
     public async Task Create(Tentity entity)
@@ -148,8 +143,31 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
     }
 
-    public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>>? query = null)
+    public Task Delete(Tentity entity)
     {
-        return await Count(query) > 0;
+        if (entity is null)
+        {
+            throw new ArgumentEntityException($"User try to delete a null entity ({typeof(Tentity).Name}).");
+        }
+
+        try
+        {
+            if (entity.Id.Equals(Guid.Empty))
+            {
+                throw new ArgumentEntityException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+            }
+
+            Context.Remove<Tentity>(entity);
+
+            return Task.CompletedTask;
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new RepositoryOperationException($"{typeof(Tentity).Name} can't be deleted. Check cascade restrictions.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InternalRepositoryException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
+        }
     }
 }
