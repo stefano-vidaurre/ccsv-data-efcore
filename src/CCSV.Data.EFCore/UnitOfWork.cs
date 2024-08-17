@@ -36,7 +36,7 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            throw new EntityUpdateConcurrencyException("Edit conflict between multiple simultaneous updates", ex);
+            throw new EntityUpdateConcurrencyException("Writing conflict between multiple simultaneous updates.", ex);
         }
         catch (Exception ex)
         {
@@ -52,7 +52,7 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            throw new EntityUpdateConcurrencyException("Edit conflict between multiple simultaneous updates", ex);
+            throw new EntityUpdateConcurrencyException("Writing conflict between multiple simultaneous updates.", ex);
         }
         catch (Exception ex)
         {

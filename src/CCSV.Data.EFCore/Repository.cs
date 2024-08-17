@@ -35,12 +35,20 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<bool> Any(bool deletionsIncluded = false)
     {
-        return await Count(deletionsIncluded) > 0;
+        if(deletionsIncluded) {
+            return await Context.Set<Tentity>().AnyAsync();
+        }
+
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).AnyAsync();
     }
 
     public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
     {
-        return await Count(query, deletionsIncluded) > 0;
+        if(deletionsIncluded) {
+            return await query(Context.Set<Tentity>()).AnyAsync();
+        }
+
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).AnyAsync();
     }
 
     public async Task<Tentity?> FindOrDefault(Guid id)
