@@ -14,7 +14,8 @@ public abstract class EntityMapping<Tentity> : IEntityTypeConfiguration<Tentity>
         builder.HasKey(entity => entity.Id);
         builder.Property(entity => entity.Id).ValueGeneratedNever();
         builder.Property(entity => entity.EntityConcurrencyToken).IsConcurrencyToken();
-        builder.Ignore(entity => entity.IsDeleted);
+        builder.Ignore(entity => entity.IsEnabled);
+        builder.Ignore(entity => entity.IsDisabled);
 
         ConfigureMapping(builder);
     }

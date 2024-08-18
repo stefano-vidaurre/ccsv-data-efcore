@@ -15,40 +15,40 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         Context = context;
     }
 
-    public async Task<int> Count(bool deletionsIncluded = false)
+    public async Task<int> Count(bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await Context.Set<Tentity>().CountAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).CountAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).CountAsync();
     }
 
-    public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await query(Context.Set<Tentity>()).CountAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).CountAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).CountAsync();
     }
 
-    public async Task<bool> Any(bool deletionsIncluded = false)
+    public async Task<bool> Any(bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await Context.Set<Tentity>().AnyAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).AnyAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).AnyAsync();
     }
 
-    public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await query(Context.Set<Tentity>()).AnyAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).AnyAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).AnyAsync();
     }
 
     public async Task<Tentity?> FindOrDefault(Guid id)
@@ -68,22 +68,22 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return entity;
     }
 
-    public async Task<IEnumerable<Tentity>> GetAll(bool deletionsIncluded = false)
+    public async Task<IEnumerable<Tentity>> GetAll(bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await Context.Set<Tentity>().ToArrayAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null).ToArrayAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).ToArrayAsync();
     }
 
-    public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool deletionsIncluded = false)
+    public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(deletionsIncluded) {
+        if(disabledIncluded) {
             return await query(Context.Set<Tentity>()).ToArrayAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDeletionDate == null)).ToArrayAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).ToArrayAsync();
     }
 
     public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
