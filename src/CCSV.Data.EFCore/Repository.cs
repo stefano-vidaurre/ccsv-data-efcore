@@ -17,7 +17,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<int> Count(bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await Context.Set<Tentity>().CountAsync();
         }
 
@@ -26,7 +27,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await query(Context.Set<Tentity>()).CountAsync();
         }
 
@@ -35,7 +37,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<bool> Any(bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await Context.Set<Tentity>().AnyAsync();
         }
 
@@ -44,7 +47,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await query(Context.Set<Tentity>()).AnyAsync();
         }
 
@@ -70,7 +74,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<IEnumerable<Tentity>> GetAll(bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await Context.Set<Tentity>().ToArrayAsync();
         }
 
@@ -79,7 +84,8 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
-        if(disabledIncluded) {
+        if (disabledIncluded)
+        {
             return await query(Context.Set<Tentity>()).ToArrayAsync();
         }
 
@@ -107,18 +113,18 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             throw new ArgumentEntityException($"User try to create a null entity ({typeof(Tentity).Name}).");
         }
 
+        if (entity.Id.Equals(Guid.Empty))
+        {
+            throw new ArgumentEntityException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+        }
+
+        if (await Context.Set<Tentity>().ContainsAsync(entity))
+        {
+            throw new DuplicatedValueException($"The {typeof(Tentity).Name}(Id: {entity.Id}) is already in data base.");
+        }
+
         try
         {
-            if (entity.Id.Equals(Guid.Empty))
-            {
-                throw new ArgumentEntityException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
-            }
-
-            if (await Context.Set<Tentity>().ContainsAsync(entity))
-            {
-                throw new DuplicatedValueException($"The {typeof(Tentity).Name}(Id: {entity.Id}) is already in data base.");
-            }
-
             Context.Add<Tentity>(entity);
         }
         catch (Exception ex)
@@ -134,13 +140,13 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             throw new ArgumentEntityException($"User try to update a null entity ({typeof(Tentity).Name}).");
         }
 
+        if (entity.Id.Equals(Guid.Empty))
+        {
+            throw new ArgumentEntityException($"Update {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+        }
+
         try
         {
-            if (entity.Id.Equals(Guid.Empty))
-            {
-                throw new ArgumentEntityException($"Update {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
-            }
-
             Context.Update<Tentity>(entity);
 
             return Task.CompletedTask;
@@ -158,13 +164,13 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
             throw new ArgumentEntityException($"User try to delete a null entity ({typeof(Tentity).Name}).");
         }
 
+        if (entity.Id.Equals(Guid.Empty))
+        {
+            throw new ArgumentEntityException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+        }
+
         try
         {
-            if (entity.Id.Equals(Guid.Empty))
-            {
-                throw new ArgumentEntityException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
-            }
-
             Context.Remove<Tentity>(entity);
 
             return Task.CompletedTask;
