@@ -76,20 +76,20 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
     {
         if (disabledIncluded)
         {
-            return await Context.Set<Tentity>().ToArrayAsync();
+            return await Context.Set<Tentity>().AsNoTracking().ToArrayAsync();
         }
 
-        return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).ToArrayAsync();
+        return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).AsNoTracking().ToArrayAsync();
     }
 
     public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
-            return await query(Context.Set<Tentity>()).ToArrayAsync();
+            return await query(Context.Set<Tentity>()).AsNoTracking().ToArrayAsync();
         }
 
-        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).ToArrayAsync();
+        return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).AsNoTracking().ToArrayAsync();
     }
 
     public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
