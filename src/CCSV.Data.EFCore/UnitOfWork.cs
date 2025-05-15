@@ -60,6 +60,11 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    public void Clear()
+    {
+        Context.ChangeTracker.Clear();
+    }
+
     public void Dispose()
     {
         Dispose(true);
