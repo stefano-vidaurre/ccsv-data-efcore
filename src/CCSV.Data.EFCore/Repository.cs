@@ -115,12 +115,12 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
         if (entity.Id.Equals(Guid.Empty))
         {
-            throw new ArgumentEntityException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+            throw new ArgumentEntityException($"Create {typeof(Tentity).Name} (Id: {entity.Id}) exception.");
         }
 
         if (await Context.Set<Tentity>().ContainsAsync(entity))
         {
-            throw new DuplicatedValueException($"The {typeof(Tentity).Name}(Id: {entity.Id}) is already in data base.");
+            throw new DuplicatedValueException($"The {typeof(Tentity).Name} (Id: {entity.Id}) is already in data base.");
         }
 
         try
@@ -129,7 +129,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
         catch (Exception ex)
         {
-            throw new InternalRepositoryException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
+            throw new InternalRepositoryException($"Create {typeof(Tentity).Name} (Id: {entity.Id}) exception.", ex);
         }
     }
 
@@ -142,7 +142,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
         if (entity.Id.Equals(Guid.Empty))
         {
-            throw new ArgumentEntityException($"Update {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+            throw new ArgumentEntityException($"Update {typeof(Tentity).Name} (Id: {entity.Id}) exception.");
         }
 
         try
@@ -153,7 +153,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
         catch (Exception ex)
         {
-            throw new InternalRepositoryException($"Update {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
+            throw new InternalRepositoryException($"Update {typeof(Tentity).Name} (Id: {entity.Id}) exception.", ex);
         }
     }
 
@@ -166,7 +166,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
         if (entity.Id.Equals(Guid.Empty))
         {
-            throw new ArgumentEntityException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+            throw new ArgumentEntityException($"Delete {typeof(Tentity).Name} (Id: {entity.Id}) exception.");
         }
 
         try
@@ -181,7 +181,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
         catch (Exception ex)
         {
-            throw new InternalRepositoryException($"Delete {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
+            throw new InternalRepositoryException($"Delete {typeof(Tentity).Name} (Id: {entity.Id}) exception.", ex);
         }
     }
 }

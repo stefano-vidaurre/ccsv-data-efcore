@@ -23,12 +23,12 @@ public abstract class DerivedRepository<Tentity, Tbase> : Repository<Tentity> wh
 
         if (entity.Id.Equals(Guid.Empty))
         {
-            throw new ArgumentEntityException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.");
+            throw new ArgumentEntityException($"Create {typeof(Tentity).Name} (Id: {entity.Id}) exception.");
         }
 
         if (await Context.Set<Tbase>().ContainsAsync(entity))
         {
-            throw new DuplicatedValueException($"The {typeof(Tentity).Name}(Id: {entity.Id}) is already in data base.");
+            throw new DuplicatedValueException($"The {typeof(Tbase).Name} (Id: {entity.Id}) is already in data base.");
         }
 
         try
@@ -37,7 +37,7 @@ public abstract class DerivedRepository<Tentity, Tbase> : Repository<Tentity> wh
         }
         catch (Exception ex)
         {
-            throw new InternalRepositoryException($"Create {typeof(Tentity).Name}(Id: {entity.Id}) exception.", ex);
+            throw new InternalRepositoryException($"Create {typeof(Tentity).Name} (Id: {entity.Id}) exception.", ex);
         }
     }
 }
