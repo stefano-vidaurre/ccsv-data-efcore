@@ -15,7 +15,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         Context = context;
     }
 
-    public async Task<int> Count(bool disabledIncluded = false)
+    public virtual async Task<int> Count(bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -25,7 +25,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).CountAsync();
     }
 
-    public async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
+    public virtual async Task<int> Count(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -35,7 +35,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).CountAsync();
     }
 
-    public async Task<bool> Any(bool disabledIncluded = false)
+    public virtual async Task<bool> Any(bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -45,7 +45,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).AnyAsync();
     }
 
-    public async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
+    public virtual async Task<bool> Any(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -55,12 +55,12 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return await query(Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null)).AnyAsync();
     }
 
-    public async Task<Tentity?> FindOrDefault(Guid id)
+    public virtual async Task<Tentity?> FindOrDefault(Guid id)
     {
         return await Context.FindAsync<Tentity>(id);
     }
 
-    public async Task<Tentity> Find(Guid id)
+    public virtual async Task<Tentity> Find(Guid id)
     {
         Tentity? entity = await FindOrDefault(id);
 
@@ -72,7 +72,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return entity;
     }
 
-    public async Task<IEnumerable<Tentity>> GetAll(bool disabledIncluded = false)
+    public virtual async Task<IEnumerable<Tentity>> GetAll(bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -82,7 +82,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return await Context.Set<Tentity>().Where(entity => entity.EntityDisabledDate == null).AsNoTracking().ToArrayAsync();
     }
 
-    public async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
+    public virtual async Task<IEnumerable<Tentity>> GetAll(Func<IQueryable<Tentity>, IQueryable<Tentity>> query, bool disabledIncluded = false)
     {
         if (disabledIncluded)
         {
@@ -94,7 +94,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
 
     public abstract Task<Tentity?> GetByIdOrDefault(Guid id);
 
-    public async Task<Tentity> GetById(Guid id)
+    public virtual async Task<Tentity> GetById(Guid id)
     {
         Tentity? entity = await GetByIdOrDefault(id);
 
@@ -106,7 +106,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         return entity;
     }
 
-    public async Task Create(Tentity entity)
+    public virtual async Task Create(Tentity entity)
     {
         if (entity is null)
         {
@@ -133,7 +133,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
     }
 
-    public Task Update(Tentity entity)
+    public virtual Task Update(Tentity entity)
     {
         if (entity is null)
         {
@@ -157,7 +157,7 @@ public abstract class Repository<Tentity> : IRepository<Tentity> where Tentity :
         }
     }
 
-    public Task Delete(Tentity entity)
+    public virtual Task Delete(Tentity entity)
     {
         if (entity is null)
         {
